@@ -7,11 +7,11 @@ use Telegram\Bot\Keyboard\Keyboard;
 
 class WeatherCommand extends Command
 {
-    protected $name = 'weather';
+    protected string $name = 'weather';
 
-    protected $description = 'Інформація про погоду';
+    protected string $description = 'Інформація про погоду';
 
-    public function handle()
+    public function handle(): void
     {
         $keyboard = new Keyboard();
 

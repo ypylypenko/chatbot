@@ -7,11 +7,11 @@ use Telegram\Bot\Commands\Command;
 
 class StartCommand extends Command
 {
-    protected $name = 'start';
+    protected string $name = 'start';
 
-    protected $description = 'Start command';
+    protected string $description = 'Start command';
 
-    public function handle()
+    public function handle(): void
     {
         $this->replyWithMessage([
             'text' => 'Привіт! Ласкаво прошу.',
