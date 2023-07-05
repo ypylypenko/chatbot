@@ -22,8 +22,6 @@ services:
     volumes:
       - ./:/app:delegated
     restart: always
-    #    env_file:
-    #      - .env
     depends_on:
       - redis
       - mysql
@@ -36,6 +34,7 @@ services:
     restart: always
 
   mysql:
+    platform: linux/amd64
     image: mysql:8.0.28
     volumes:
       - .docker/dev-volume:/var/lib/mysql
