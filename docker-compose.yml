@@ -1,50 +1,59 @@
 version: '3.8'
 
 services:
-  nginx:
-    build:
-        context: ./.docker/nginx
-        dockerfile: Dockerfile
-    volumes:
-      - ./:/app:delegated
-    links:
-      - php-fpm
-    restart: always
-    depends_on:
-      - php-fpm
-    ports:
-      - "80:80"
+    nginx:
+        build:
+            context: ./.docker/nginx
+            dockerfile: Dockerfile
+        volumes:
+            - ./:/app:delegated
+        links:
+            - php-fpm
+        restart: always
+        depends_on:
+            - php-fpm
+        ports:
+            - "80:80"
 
-  php-fpm:
-    build:
-      context: .
-      dockerfile: .docker/php/Dockerfile
-    volumes:
-      - ./:/app:delegated
-    restart: always
-    depends_on:
-      - redis
-      - mysql
+    php-fpm: &php-service
+        build:
+            context: .
+            dockerfile: .docker/php/Dockerfile
+        volumes:
+            - ./:/app:delegated
+        restart: always
+        depends_on:
+            - redis
+            - mysql
 
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
-    command: [ "redis-server", "--appendonly", "yes" ]
-    restart: always
+    redis:
+        image: redis:latest
+        ports:
+            - "6379:6379"
+        command: [ "redis-server", "--appendonly", "yes" ]
+        restart: always
 
-  mysql:
-    platform: linux/amd64
-    image: mysql:8.0.28
-    volumes:
-      - .docker/dev-volume:/var/lib/mysql
-    env_file:
-      - .env
-    environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "3306:3306"
-    restart: always
+    mysql:
+        platform: linux/amd64
+        image: mysql:8.0.28
+        volumes:
+            - .docker/dev-volume:/var/lib/mysql
+        env_file:
+            - .env
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        ports:
+            - "3306:3306"
+        restart: always
+
+    queue:
+        <<: *php-service
+        restart: always
+        command: php /app/artisan queue:work
+        depends_on:
+            - mysql
+
+

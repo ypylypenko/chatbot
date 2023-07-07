@@ -32,20 +32,13 @@ return [
     |             ]
     */
     'bots' => [
-        'ChatbotDevBot' => [
-            'username' => 'ChatbotDevBot',
+        'FortunaClientServiceBot' => [
+            'username' => 'FortunaClientServiceBot',
             'token' => env('TELEGRAM_BOT_TOKEN', 'YOUR-BOT-TOKEN'),
             'certificate_path' => env('TELEGRAM_CERTIFICATE_PATH', 'YOUR-CERTIFICATE-PATH'),
             'webhook_url' => env('TELEGRAM_WEBHOOK_URL', 'YOUR-BOT-WEBHOOK-URL'),
-            'commands' => [
-                //Acme\Project\Commands\MyTelegramBot\BotCommand::class
-            ],
+            'commands' => [],
         ],
-
-        //        'mySecondBot' => [
-        //            'username'  => 'AnotherTelegram_Bot',
-        //            'token' => '123456:abc',
-        //        ],
     ],
 
     /*
@@ -57,7 +50,7 @@ return [
     | your default bot for regular use.
     |
     */
-    'default' => 'ChatbotDevBot',
+    'default' => 'FortunaClientServiceBot',
 
     /*
     |--------------------------------------------------------------------------
@@ -118,7 +111,6 @@ return [
     'commands' => [
 //        Telegram\Bot\Commands\HelpCommand::class,
         \App\Commands\StartCommand::class,
-        \App\Commands\WeatherCommand::class,
     ],
 
     /*
